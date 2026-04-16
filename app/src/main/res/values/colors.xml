@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 汉文化主题色 -->
+    <color name="primary">#C41E3A</color>
+    <color name="primary_dark">#8B0000</color>
+    <color name="primary_light">#FF6B6B</color>
+    <color name="accent">#DAA520</color>
+    <color name="accent_dark">#B8860B</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="background">#F5F5F5</color>
+    <color name="card_background">#FFFFFF</color>
+
+    <color name="text_primary">#333333</color>
+    <color name="text_secondary">#666666</color>
+    <color name="text_hint">#999999</color>
+    <color name="text_link">#1E90FF</color>
+
+    <color name="divider">#E0E0E0</color>
+    <color name="red">#FF0000</color>
+    <color name="green">#4CAF50</color>
+    <color name="orange">#FF9800</color>
+</resources>

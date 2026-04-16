@@ -1,6 +1,5 @@
 package com.example.han.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -75,13 +74,8 @@ public class PostDetailActivity extends AppCompatActivity {
 
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(v -> {
-            Intent intent = new Intent(PostDetailActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            finish();
-        });
-        setSupportActionBar(toolbar);
+        toolbar.setTitle("帖子详情");
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         tvTitle = findViewById(R.id.tvTitle);
         tvAuthorName = findViewById(R.id.tvAuthorName);

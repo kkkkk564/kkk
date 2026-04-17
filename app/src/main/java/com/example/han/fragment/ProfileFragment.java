@@ -86,7 +86,7 @@ public class ProfileFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
                     User user = response.body().getData();
                     tvName.setText(user.getName());
-                    tvBio.setText(user.getBio() != null ? user.getBio() : "这个人很懒，什么都没留下");
+                    tvBio.setText(user.getBio() != null ? user.getBio() : getString(R.string.default_bio));
                     tokenManager.saveUserInfo(user.getId(), user.getName());
 
                     if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {

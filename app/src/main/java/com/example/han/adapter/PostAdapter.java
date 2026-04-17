@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.example.han.R;
 import com.example.han.model.Post;
 import com.example.han.util.TimeUtils;
+import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView ivCover, ivAuthorAvatar;
         TextView tvTitle, tvDescription, tvAuthorName, tvLikesCount, tvCommentsCount, tvCreatedAt;
+        Chip chipType;
 
         PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -85,11 +87,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             tvLikesCount = itemView.findViewById(R.id.tvLikesCount);
             tvCommentsCount = itemView.findViewById(R.id.tvCommentsCount);
             tvCreatedAt = itemView.findViewById(R.id.tvCreatedAt);
+            chipType = itemView.findViewById(R.id.chipType);
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onItemClick(posts.get(getAdapterPosition()));
                 }
+            });
+
+            // Press animation
+            itemView.setOnTouchListener((v, event) -> {
+                switch (event.getAction()) {
+                    case android.view.MotionEvent.ACTION_DOWN:
+                        v.animate().scaleX(0.97f).scaleY(0.97f).setDuration(100).start();
+                        break;
+                    case android.view.MotionEvent.ACTION_UP:
+                    case android.view.MotionEvent.ACTION_CANCEL:
+                        v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start();
+                        break;
+                }
+                return false;
             });
         }
 
@@ -100,6 +117,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             tvLikesCount.setText("" + post.getLikesCount());
             tvCommentsCount.setText("" + post.getCommentsCount());
             tvCreatedAt.setText(TimeUtils.formatRelativeTime(post.getCreatedAt()));
+
+            // Type chip
+            String typeLabel = getTypeLabel(post.getType());
+            chipType.setText(typeLabel);
 
             if (post.getImageUrl() != null && !post.getImageUrl().isEmpty()) {
                 ivCover.setVisibility(View.VISIBLE);
@@ -116,6 +137,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         .load(post.getAuthorAvatar())
                         .circleCrop()
                         .into(ivAuthorAvatar);
+            }
+        }
+
+        private String getTypeLabel(String type) {
+            if (type == null) return "";
+            switch (type) {
+                case "Hanfu": return "汉服";
+                case "Poetry": return "诗词";
+                case "Music": return "音乐";
+                case "Etiquette": return "礼仪";
+                case "Solar": return "节气";
+                case "UserPost": return "用户发布";
+                default: return type;
             }
         }
     }

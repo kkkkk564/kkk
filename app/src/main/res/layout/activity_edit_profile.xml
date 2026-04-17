@@ -10,10 +10,11 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/primary"
+        android:background="@drawable/bg_gradient"
+        android:elevation="4dp"
         app:title="@string/edit_profile"
         app:titleTextColor="@color/white"
-        app:navigationIcon="?attr/homeAsUpIndicator" />
+        app:navigationIcon="@drawable/ic_back" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -23,30 +24,52 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="24dp"
+            android:gravity="center_horizontal">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/ivAvatar"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@android:drawable/ic_menu_camera"
-                app:civ_border_width="2dp"
-                app:civ_border_color="@color/primary" />
+            <!-- 头像 -->
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:src="@android:drawable/ic_menu_camera"
+                    app:civ_border_width="3dp"
+                    app:civ_border_color="@color/primary" />
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="bottom|end"
+                    android:src="@android:drawable/ic_menu_camera"
+                    android:background="@drawable/bg_circle"
+                    android:padding="6dp" />
+            </FrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/change_avatar"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:textColor="@color/primary" />
+                android:layout_marginTop="12dp"
+                android:textColor="@color/primary"
+                android:textSize="14sp" />
 
+            <!-- 用户名 -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/username"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="32dp"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etName"
@@ -56,11 +79,17 @@
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- 个人简介 -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/bio_hint"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="20dp"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etBio"
@@ -72,13 +101,15 @@
                     android:maxLength="200" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+            <!-- 保存按钮 -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
+                android:layout_marginTop="32dp"
                 android:text="@string/save"
-                android:layout_marginTop="24dp"
-                android:padding="12dp" />
+                android:textSize="16sp"
+                app:cornerRadius="26dp" />
 
         </LinearLayout>
     </ScrollView>

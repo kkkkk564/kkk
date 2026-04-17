@@ -74,7 +74,6 @@ public class PostDetailActivity extends AppCompatActivity {
 
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("帖子详情");
         toolbar.setNavigationOnClickListener(v -> finish());
 
         tvTitle = findViewById(R.id.tvTitle);
@@ -169,6 +168,11 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     private void toggleLike() {
+        // Animate the heart icon
+        ivLikeIcon.animate().scaleX(1.3f).scaleY(1.3f).setDuration(150).withEndAction(() -> {
+            ivLikeIcon.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start();
+        }).start();
+
         if (isLiked) {
             apiService.unlikePost(postId).enqueue(new Callback<ApiResponse<LikeResult>>() {
                 @Override
@@ -207,8 +211,8 @@ public class PostDetailActivity extends AppCompatActivity {
     private void updateLikeUI() {
         tvLikesCount.setText("" + likesCount);
         ivLikeIcon.setImageResource(isLiked
-                ? android.R.drawable.btn_star_big_on
-                : android.R.drawable.btn_star_big_off);
+                ? R.drawable.ic_heart_filled
+                : R.drawable.ic_heart);
     }
 
     private void postComment() {

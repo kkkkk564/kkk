@@ -1,52 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/bg_gradient">
+    android:background="@drawable/bg_gradient"
+    android:fitsSystemWindows="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="80dp"
-        android:text="汉文化"
-        android:textColor="@color/white"
-        android:textSize="36sp"
-        android:textStyle="bold" />
+    <!-- 装饰性背景圆 -->
+    <View
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-40dp"
+        android:layout_marginEnd="-40dp"
+        android:background="@drawable/bg_circle"
+        android:alpha="0.1" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginHorizontal="32dp"
-        android:background="@android:color/transparent"
-        app:tabIndicatorColor="@color/white"
-        app:tabSelectedTextColor="@color/white"
-        app:tabTextColor="@color/white"
-        app:tabIndicatorFullWidth="true">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:clipToPadding="false">
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login" />
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/register" />
-    </com.google.android.material.tabs.TabLayout>
+            <!-- 标题区域 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="60dp">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/bg_card"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="32dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/welcome_text"
+                    android:textColor="@color/white"
+                    android:textSize="40sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.05" />
 
-</LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/welcome_desc"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:alpha="0.8"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+
+            <!-- Tab 切换 -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginHorizontal="40dp"
+                android:background="@android:color/transparent"
+                app:tabIndicatorColor="@color/white"
+                app:tabIndicatorHeight="3dp"
+                app:tabSelectedTextColor="@color/white"
+                app:tabTextColor="@color/white"
+                app:tabTextAppearance="@style/TextAppearance.Design.Tab"
+                app:tabIndicatorFullWidth="false" />
+
+            <!-- 内容卡片 -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/bg_card"
+                android:elevation="8dp"
+                android:minHeight="350dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

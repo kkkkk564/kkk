@@ -78,6 +78,15 @@ public interface ApiService {
             @Query("size") int size
     );
 
+    @GET("api/posts/search")
+    Call<ApiResponse<PostPage>> searchPosts(
+            @Query("keyword") String keyword,
+            @Query("type") String type,
+            @Query("page") int page,
+            @Query("size") int size,
+            @Query("sort") String sort
+    );
+
     // ========== 评论模块 ==========
 
     @POST("api/comments")

@@ -1,24 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 汉文化主题色 -->
-    <color name="primary">#C41E3A</color>
+    <color name="primary">#B8314A</color>
     <color name="primary_dark">#8B0000</color>
-    <color name="primary_light">#FF6B6B</color>
+    <color name="primary_light">#D4556B</color>
+
     <color name="accent">#DAA520</color>
     <color name="accent_dark">#B8860B</color>
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="background">#F5F5F5</color>
+
+    <color name="background">#F2F2F2</color>
+    <color name="surface">#FAFAFA</color>
     <color name="card_background">#FFFFFF</color>
 
-    <color name="text_primary">#333333</color>
+    <color name="text_primary">#1A1A1A</color>
     <color name="text_secondary">#666666</color>
     <color name="text_hint">#999999</color>
     <color name="text_link">#1E90FF</color>
 
-    <color name="divider">#E0E0E0</color>
-    <color name="red">#FF0000</color>
+    <color name="divider">#EEEEEE</color>
+    <color name="red">#E53935</color>
     <color name="green">#4CAF50</color>
     <color name="orange">#FF9800</color>
+
+    <!-- Shimmer 骨架屏 -->
+    <color name="shimmer_base">#E0E0E0</color>
+    <color name="shimmer_highlight">#F5F5F5</color>
+
+    <!-- 遮罩 -->
+    <color name="overlay_50">#80000000</color>
+
+    <!-- 渐变 -->
+    <color name="gradient_start">#B8314A</color>
+    <color name="gradient_end">#8B0000</color>
 </resources>

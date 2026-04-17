@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -22,6 +24,8 @@ import com.example.han.network.ApiService;
 import com.example.han.network.RetrofitClient;
 import com.example.han.util.Constants;
 import com.example.han.util.ToastUtils;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,19 +42,15 @@ public class CreatePostActivity extends AppCompatActivity {
 
     private ApiService apiService;
     private EditText etTitle, etContent;
-    private android.widget.Spinner spinnerType;
-    private android.widget.ImageView ivCover;
-    private android.widget.TextView tvUploadCover;
-    private android.widget.Button btnPublish;
+    private ChipGroup chipGroupType;
+    private ImageView ivCover;
+    private LinearLayout llCoverPlaceholder;
+    private Button btnPublish;
     private androidx.cardview.widget.CardView cardCover;
 
     private String coverUrl = null;
     private Uri selectedImageUri = null;
-    private String[] typeValues = new String[]{
-            Constants.PostType.HANFU, Constants.PostType.POETRY,
-            Constants.PostType.MUSIC, Constants.PostType.ETIQUETTE,
-            Constants.PostType.SOLAR, Constants.PostType.USER_POST
-    };
+    private String selectedType = Constants.PostType.HANFU;
 
     private final ActivityResultLauncher<String> imagePicker =
             registerForActivityResult(new ActivityResultContracts.GetContent(), this::onImageSelected);
@@ -70,16 +70,29 @@ public class CreatePostActivity extends AppCompatActivity {
 
         etTitle = findViewById(R.id.etTitle);
         etContent = findViewById(R.id.etContent);
-        spinnerType = findViewById(R.id.spinnerType);
+        chipGroupType = findViewById(R.id.chipGroupType);
         ivCover = findViewById(R.id.ivCover);
-        tvUploadCover = findViewById(R.id.tvUploadCover);
+        llCoverPlaceholder = findViewById(R.id.llCoverPlaceholder);
         btnPublish = findViewById(R.id.btnPublish);
         cardCover = findViewById(R.id.cardCover);
 
-        // Setup type spinner (exclude "全部" option)
-        String[] postTypes = new String[]{"汉服", "诗词", "音乐", "礼仪", "节气", "用户发布"};
-        spinnerType.setAdapter(new android.widget.ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, postTypes));
+        // Setup type chips
+        chipGroupType.check(R.id.chip_hanfu); // default
+        chipGroupType.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.chip_hanfu) {
+                selectedType = Constants.PostType.HANFU;
+            } else if (checkedId == R.id.chip_poetry) {
+                selectedType = Constants.PostType.POETRY;
+            } else if (checkedId == R.id.chip_music) {
+                selectedType = Constants.PostType.MUSIC;
+            } else if (checkedId == R.id.chip_etiquette) {
+                selectedType = Constants.PostType.ETIQUETTE;
+            } else if (checkedId == R.id.chip_solar) {
+                selectedType = Constants.PostType.SOLAR;
+            } else if (checkedId == R.id.chip_user_post) {
+                selectedType = Constants.PostType.USER_POST;
+            }
+        });
 
         cardCover.setOnClickListener(v -> imagePicker.launch("image/*"));
         btnPublish.setOnClickListener(v -> publishPost());
@@ -90,7 +103,7 @@ public class CreatePostActivity extends AppCompatActivity {
             selectedImageUri = uri;
             Glide.with(this).load(uri).centerCrop().into(ivCover);
             ivCover.setVisibility(View.VISIBLE);
-            tvUploadCover.setVisibility(View.GONE);
+            llCoverPlaceholder.setVisibility(View.GONE);
             uploadImage(uri);
         }
     }
@@ -139,8 +152,6 @@ public class CreatePostActivity extends AppCompatActivity {
     private void publishPost() {
         String title = etTitle.getText().toString().trim();
         String content = etContent.getText().toString().trim();
-        int typeIndex = spinnerType.getSelectedItemPosition();
-        String type = typeValues[typeIndex];
 
         if (title.isEmpty() || title.length() < 2) {
             ToastUtils.show(this, R.string.post_title_hint);
@@ -156,7 +167,7 @@ public class CreatePostActivity extends AppCompatActivity {
         }
 
         String description = content.length() > 50 ? content.substring(0, 50) + "..." : content;
-        PostRequest request = new PostRequest(title, description, content, coverUrl, type);
+        PostRequest request = new PostRequest(title, description, content, coverUrl, selectedType);
 
         btnPublish.setEnabled(false);
         apiService.createPost(request).enqueue(new Callback<ApiResponse<PostItem>>() {

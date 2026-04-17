@@ -12,6 +12,9 @@
     <string name="save">保存</string>
     <string name="submit">提交</string>
     <string name="no_data">暂无数据</string>
+    <string name="search_hint">搜索帖子标题</string>
+    <string name="search_empty">未找到相关帖子</string>
+    <string name="load_failed">加载失败</string>
 
     <!-- 登录/注册 -->
     <string name="login">登录</string>
@@ -28,6 +31,8 @@
     <string name="please_input_password">请输入密码</string>
     <string name="login_failed">登录失败</string>
     <string name="register_failed">注册失败</string>
+    <string name="welcome_text">汉文化</string>
+    <string name="welcome_desc">传承千年之美</string>
 
     <!-- 主页 -->
     <string name="tab_home">首页</string>
@@ -50,6 +55,8 @@
     <string name="comment_success">评论发表成功</string>
     <string name="comment_failed">评论失败</string>
     <string name="please_input_comment">请输入评论内容</string>
+    <string name="comments_title">评论</string>
+    <string name="send">发送</string>
 
     <!-- 点赞 -->
     <string name="like_success">点赞成功</string>
@@ -61,9 +68,19 @@
     <string name="profile_update_success">更新成功</string>
     <string name="profile_update_failed">更新失败</string>
     <string name="change_avatar">更换头像</string>
+    <string name="default_bio">这个人很懒，什么都没留下</string>
 
     <!-- 图片上传 -->
     <string name="upload_failed">上传失败</string>
     <string name="upload_success">上传成功</string>
     <string name="image_too_large">图片大小不能超过10MB</string>
+
+    <!-- 帖子类型 -->
+    <string name="type_all">全部</string>
+    <string name="type_hanfu">汉服</string>
+    <string name="type_poetry">诗词</string>
+    <string name="type_music">音乐</string>
+    <string name="type_etiquette">礼仪</string>
+    <string name="type_solar">节气</string>
+    <string name="type_user_post">用户发布</string>
 </resources>

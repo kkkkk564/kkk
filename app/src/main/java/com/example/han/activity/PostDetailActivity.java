@@ -1,5 +1,7 @@
 package com.example.han.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -52,6 +54,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
     private boolean isLiked = false;
     private int likesCount = 0;
+    private boolean postDeleted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,19 @@ public class PostDetailActivity extends AppCompatActivity {
         initViews();
         loadPostDetail();
         loadLikeStatus();
+    }
+
+    @Override
+    public void finish() {
+        Intent result = new Intent();
+        result.putExtra("postId", postId);
+        result.putExtra("deleted", postDeleted);
+        if (!postDeleted) {
+            result.putExtra("likesCount", likesCount);
+            result.putExtra("commentsCount", commentAdapter.getItemCount());
+        }
+        setResult(Activity.RESULT_OK, result);
+        super.finish();
     }
 
     private void initViews() {
@@ -230,6 +246,7 @@ public class PostDetailActivity extends AppCompatActivity {
                             Comment comment = response.body().getData();
                             commentAdapter.addComment(comment);
                             etComment.setText("");
+                            tvCommentsCount.setText(String.valueOf(commentAdapter.getItemCount()));
                             ToastUtils.show(PostDetailActivity.this, R.string.comment_success);
                         } else {
                             ToastUtils.show(PostDetailActivity.this, R.string.comment_failed);
@@ -257,6 +274,7 @@ public class PostDetailActivity extends AppCompatActivity {
             public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
                     ToastUtils.show(PostDetailActivity.this, R.string.delete_success);
+                    postDeleted = true;
                     finish();
                 } else {
                     ToastUtils.show(PostDetailActivity.this, R.string.delete_failed);

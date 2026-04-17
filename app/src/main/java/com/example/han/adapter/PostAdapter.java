@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.example.han.R;
 import com.example.han.model.Post;
 import com.example.han.util.TimeUtils;
-import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +52,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         notifyDataSetChanged();
     }
 
+    public void updatePost(int position, int likesCount, int commentsCount) {
+        if (position >= 0 && position < posts.size()) {
+            Post post = posts.get(position);
+            post.setLikesCount(likesCount);
+            post.setCommentsCount(commentsCount);
+            notifyItemChanged(position);
+        }
+    }
+
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -75,7 +83,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView ivCover, ivAuthorAvatar;
         TextView tvTitle, tvDescription, tvAuthorName, tvLikesCount, tvCommentsCount, tvCreatedAt;
-        Chip chipType;
 
         PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,7 +94,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             tvLikesCount = itemView.findViewById(R.id.tvLikesCount);
             tvCommentsCount = itemView.findViewById(R.id.tvCommentsCount);
             tvCreatedAt = itemView.findViewById(R.id.tvCreatedAt);
-            chipType = itemView.findViewById(R.id.chipType);
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
@@ -118,10 +124,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             tvCommentsCount.setText("" + post.getCommentsCount());
             tvCreatedAt.setText(TimeUtils.formatRelativeTime(post.getCreatedAt()));
 
-            // Type chip
-            String typeLabel = getTypeLabel(post.getType());
-            chipType.setText(typeLabel);
-
             if (post.getImageUrl() != null && !post.getImageUrl().isEmpty()) {
                 ivCover.setVisibility(View.VISIBLE);
                 Glide.with(itemView.getContext())
@@ -137,19 +139,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         .load(post.getAuthorAvatar())
                         .circleCrop()
                         .into(ivAuthorAvatar);
-            }
-        }
-
-        private String getTypeLabel(String type) {
-            if (type == null) return "";
-            switch (type) {
-                case "Hanfu": return "汉服";
-                case "Poetry": return "诗词";
-                case "Music": return "音乐";
-                case "Etiquette": return "礼仪";
-                case "Solar": return "节气";
-                case "UserPost": return "用户发布";
-                default: return type;
             }
         }
     }

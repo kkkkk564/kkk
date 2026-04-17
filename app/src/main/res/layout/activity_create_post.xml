@@ -45,64 +45,6 @@
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- 类型选择 -->
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:layout_marginTop="16dp">
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroupType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:singleSelection="true"
-                    app:chipSpacingHorizontal="8dp">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_hanfu"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/type_hanfu" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_poetry"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/type_poetry" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_music"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/type_music" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_etiquette"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/type_etiquette" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_solar"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/type_solar" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_user_post"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/type_user_post" />
-                </com.google.android.material.chip.ChipGroup>
-            </HorizontalScrollView>
-
             <!-- 封面上传 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardCover"

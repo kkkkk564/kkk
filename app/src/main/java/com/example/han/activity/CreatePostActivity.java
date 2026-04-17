@@ -24,8 +24,6 @@ import com.example.han.network.ApiService;
 import com.example.han.network.RetrofitClient;
 import com.example.han.util.Constants;
 import com.example.han.util.ToastUtils;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,7 +40,6 @@ public class CreatePostActivity extends AppCompatActivity {
 
     private ApiService apiService;
     private EditText etTitle, etContent;
-    private ChipGroup chipGroupType;
     private ImageView ivCover;
     private LinearLayout llCoverPlaceholder;
     private Button btnPublish;
@@ -50,7 +47,6 @@ public class CreatePostActivity extends AppCompatActivity {
 
     private String coverUrl = null;
     private Uri selectedImageUri = null;
-    private String selectedType = Constants.PostType.HANFU;
 
     private final ActivityResultLauncher<String> imagePicker =
             registerForActivityResult(new ActivityResultContracts.GetContent(), this::onImageSelected);
@@ -70,29 +66,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
         etTitle = findViewById(R.id.etTitle);
         etContent = findViewById(R.id.etContent);
-        chipGroupType = findViewById(R.id.chipGroupType);
         ivCover = findViewById(R.id.ivCover);
         llCoverPlaceholder = findViewById(R.id.llCoverPlaceholder);
         btnPublish = findViewById(R.id.btnPublish);
         cardCover = findViewById(R.id.cardCover);
-
-        // Setup type chips
-        chipGroupType.check(R.id.chip_hanfu); // default
-        chipGroupType.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.chip_hanfu) {
-                selectedType = Constants.PostType.HANFU;
-            } else if (checkedId == R.id.chip_poetry) {
-                selectedType = Constants.PostType.POETRY;
-            } else if (checkedId == R.id.chip_music) {
-                selectedType = Constants.PostType.MUSIC;
-            } else if (checkedId == R.id.chip_etiquette) {
-                selectedType = Constants.PostType.ETIQUETTE;
-            } else if (checkedId == R.id.chip_solar) {
-                selectedType = Constants.PostType.SOLAR;
-            } else if (checkedId == R.id.chip_user_post) {
-                selectedType = Constants.PostType.USER_POST;
-            }
-        });
 
         cardCover.setOnClickListener(v -> imagePicker.launch("image/*"));
         btnPublish.setOnClickListener(v -> publishPost());
@@ -167,7 +144,7 @@ public class CreatePostActivity extends AppCompatActivity {
         }
 
         String description = content.length() > 50 ? content.substring(0, 50) + "..." : content;
-        PostRequest request = new PostRequest(title, description, content, coverUrl, selectedType);
+        PostRequest request = new PostRequest(title, description, content, coverUrl, Constants.PostType.USER_POST);
 
         btnPublish.setEnabled(false);
         apiService.createPost(request).enqueue(new Callback<ApiResponse<PostItem>>() {

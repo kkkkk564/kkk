@@ -23,7 +23,9 @@ public class Post {
     public String getAuthorName() { return authorName; }
     public String getAuthorAvatar() { return authorAvatar; }
     public int getLikesCount() { return likesCount; }
+    public void setLikesCount(int likesCount) { this.likesCount = likesCount; }
     public int getCommentsCount() { return commentsCount; }
+    public void setCommentsCount(int commentsCount) { this.commentsCount = commentsCount; }
     public boolean isLiked() { return isLiked; }
     public String getCreatedAt() { return createdAt; }
 }

@@ -18,31 +18,12 @@
         android:orientation="vertical">
 
         <!-- 封面图 -->
-        <FrameLayout
+        <ImageView
+            android:id="@+id/ivCover"
             android:layout_width="match_parent"
-            android:layout_height="180dp">
-
-            <ImageView
-                android:id="@+id/ivCover"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:background="@color/shimmer_base" />
-
-            <!-- 类型标签 -->
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:layout_gravity="top|start"
-                android:textSize="11sp"
-                android:minHeight="0dp"
-                app:chipMinHeight="28dp"
-                app:chipCornerRadius="12dp"
-                app:chipBackgroundColor="@color/overlay_50"
-                android:textColor="@color/white" />
-        </FrameLayout>
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:background="@color/shimmer_base" />
 
         <LinearLayout
             android:layout_width="match_parent"

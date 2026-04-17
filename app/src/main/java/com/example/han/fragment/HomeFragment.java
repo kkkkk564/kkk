@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,8 +29,6 @@ import com.example.han.network.ApiService;
 import com.example.han.network.RetrofitClient;
 import com.example.han.util.Constants;
 import com.example.han.util.ToastUtils;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,6 @@ public class HomeFragment extends Fragment {
     private PostAdapter postAdapter;
     private SwipeRefreshLayout swipeRefresh;
     private RecyclerView rvPosts;
-    private ChipGroup chipGroup;
     private EditText etSearch;
     private ImageView ivSearchClear;
     private LinearLayout shimmerContainer;
@@ -49,8 +48,9 @@ public class HomeFragment extends Fragment {
     private int currentPage = 0;
     private boolean isLoading = false;
     private boolean hasMore = true;
-    private String currentType = Constants.PostType.ALL;
     private String searchKeyword = "";
+
+    private ActivityResultLauncher<Intent> postDetailLauncher;
 
     @Nullable
     @Override
@@ -67,7 +67,6 @@ public class HomeFragment extends Fragment {
 
         swipeRefresh = view.findViewById(R.id.swipeRefresh);
         rvPosts = view.findViewById(R.id.rvPosts);
-        chipGroup = view.findViewById(R.id.chipGroup);
         etSearch = view.findViewById(R.id.etSearch);
         ivSearchClear = view.findViewById(R.id.ivSearchClear);
         shimmerContainer = view.findViewById(R.id.shimmerContainer);
@@ -76,14 +75,45 @@ public class HomeFragment extends Fragment {
         rvPosts.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvPosts.setAdapter(postAdapter);
 
+        postDetailLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == android.app.Activity.RESULT_OK && result.getData() != null) {
+                        boolean deleted = result.getData().getBooleanExtra("deleted", false);
+                        long postId = result.getData().getLongExtra("postId", -1);
+                        List<Post> posts = postAdapter.getPosts();
+                        if (deleted) {
+                            for (int i = 0; i < posts.size(); i++) {
+                                if (posts.get(i).getId() == postId) {
+                                    posts.remove(i);
+                                    postAdapter.notifyItemRemoved(i);
+                                    break;
+                                }
+                            }
+                        } else {
+                            int likesCount = result.getData().getIntExtra("likesCount", -1);
+                            int commentsCount = result.getData().getIntExtra("commentsCount", -1);
+                            for (int i = 0; i < posts.size(); i++) {
+                                if (posts.get(i).getId() == postId) {
+                                    if (likesCount >= 0) {
+                                        posts.get(i).setLikesCount(likesCount);
+                                    }
+                                    if (commentsCount >= 0) {
+                                        posts.get(i).setCommentsCount(commentsCount);
+                                    }
+                                    postAdapter.notifyItemChanged(i);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                });
+
         postAdapter.setOnItemClickListener(post -> {
             Intent intent = new Intent(requireContext(), PostDetailActivity.class);
             intent.putExtra("postId", post.getId());
-            startActivity(intent);
+            postDetailLauncher.launch(intent);
         });
-
-        // Setup type chips
-        setupTypeChips();
 
         // Setup search
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
@@ -119,27 +149,6 @@ public class HomeFragment extends Fragment {
         });
 
         refreshPosts();
-    }
-
-    private void setupTypeChips() {
-        chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.chip_all) {
-                currentType = Constants.PostType.ALL;
-            } else if (checkedId == R.id.chip_hanfu) {
-                currentType = Constants.PostType.HANFU;
-            } else if (checkedId == R.id.chip_poetry) {
-                currentType = Constants.PostType.POETRY;
-            } else if (checkedId == R.id.chip_music) {
-                currentType = Constants.PostType.MUSIC;
-            } else if (checkedId == R.id.chip_etiquette) {
-                currentType = Constants.PostType.ETIQUETTE;
-            } else if (checkedId == R.id.chip_solar) {
-                currentType = Constants.PostType.SOLAR;
-            } else if (checkedId == R.id.chip_user_post) {
-                currentType = Constants.PostType.USER_POST;
-            }
-            refreshPosts();
-        });
     }
 
     private void refreshPosts() {
@@ -191,7 +200,7 @@ public class HomeFragment extends Fragment {
     private void loadPosts() {
         isLoading = true;
         if (!searchKeyword.isEmpty()) {
-            apiService.searchPosts(searchKeyword, currentType, currentPage, Constants.PAGE_SIZE, Constants.SortType.CREATED_AT)
+            apiService.searchPosts(searchKeyword, Constants.PostType.ALL, currentPage, Constants.PAGE_SIZE, Constants.SortType.CREATED_AT)
                     .enqueue(new retrofit2.Callback<ApiResponse<PostPage>>() {
                         @Override
                         public void onResponse(retrofit2.Call<ApiResponse<PostPage>> call,
@@ -229,7 +238,7 @@ public class HomeFragment extends Fragment {
                         }
                     });
         } else {
-            apiService.getPosts(currentType, currentPage, Constants.PAGE_SIZE, Constants.SortType.CREATED_AT)
+            apiService.getPosts(Constants.PostType.ALL, currentPage, Constants.PAGE_SIZE, Constants.SortType.CREATED_AT)
                     .enqueue(new retrofit2.Callback<ApiResponse<PostPage>>() {
                         @Override
                         public void onResponse(retrofit2.Call<ApiResponse<PostPage>> call,
